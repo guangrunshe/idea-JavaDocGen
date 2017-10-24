@@ -1,0 +1,11 @@
+/**
+ *
+ #foreach ($item in $params)
+ * @param $item
+ #end
+ *
+ * @return ${return}
+ #foreach ($item in $throws)
+ * @throws $item
+ #end
+ */

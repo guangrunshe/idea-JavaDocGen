@@ -2,7 +2,7 @@
     <id>com.yhml</id>
     <name>JavaDocGen</name>
     <version>0.0.1</version>
-    <vendor email="lyon.hu@gmail.com" url="">Jianfeng.Hu</vendor>
+    <vendor email="lyon.hu@gmail.com" url="https://github.com/ksfallen/idea-JavaDocGen">Jianfeng.Hu</vendor>
 
     <description><![CDATA[
 
@@ -29,8 +29,8 @@
 
     <actions>
         <group id="javaDocGroup" class="com.yhml.generate.doc.action.DocGroupAction" text="Generate JavaDoc" description=""
-               popup="true">
-            <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="JavaGenerateGroup2"/>
+               popup="true" >
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
         </group>
     </actions>
 

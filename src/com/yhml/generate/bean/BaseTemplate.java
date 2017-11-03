@@ -55,4 +55,6 @@ public class BaseTemplate {
     public void setFileEncoding(String fileEncoding) {
         this.fileEncoding = fileEncoding;
     }
+
+
 }

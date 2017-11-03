@@ -42,6 +42,7 @@ public class DocGroupAction extends ActionGroup implements DumbAware {
             return AnAction.EMPTY_ARRAY;
         }
 
+
         final List<AnAction> children = new ArrayList<>();
         settings.getDocTemplateMap().forEach((key, value) -> children.add(getOrCreateAction(key)));
 

@@ -3,6 +3,8 @@ package com.yhml.generate.doc.action;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.Maps;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -95,6 +97,13 @@ public class DocGenAction extends AnAction implements DumbAware {
     }
 
     private void create(PsiClass psiClass, PsiMethod psiMethod, PsiElementFactory psiElementFactory) {
+        String methodName = psiMethod.getName();
+
+        // 过滤 main 方法
+        if (StringUtils.equals(methodName, "main")) {
+            return;
+        }
+
         switch (templateName) {
             case DocConstant.method:
                 createDocForMethod(psiMethod, psiElementFactory);
@@ -123,9 +132,8 @@ public class DocGenAction extends AnAction implements DumbAware {
 
             map.put("params", getMethodParams(psiMethod));
             map.put("throws", getThrowsList(psiMethod));
-            map.put("return", "");
+            map.put("return", psiMethod.getReturnTypeElement().getText());
             map.put("date", DateFormatUtil.formatDate(new Date()));
-            // map.put("returnType", psiMethod.getReturnTypeElement().getText());
             // map.put("returnType", psiMethod.getReturnType().getCanonicalText());
 
             createDoc(psiMethod, psiElementFactory, map);
@@ -152,9 +160,9 @@ public class DocGenAction extends AnAction implements DumbAware {
             }
 
             Map<String, Object> map = Maps.newHashMap();
-            // map.put("interface", interfaceName);
-            // map.put("method", psiMethod.getName());
-            // map.put("paramsType", getMethodParamsType(psiMethod));
+            map.put("interface", interfaceName);
+            map.put("method", psiMethod.getName());
+            map.put("paramsType", getMethodParamsType(psiMethod));
 
             createDoc(psiMethod, psiElementFactory, map);
 
@@ -167,8 +175,8 @@ public class DocGenAction extends AnAction implements DumbAware {
         String docString = VelocityUtil.evaluate(template.getVmTemplate(), map);
         PsiDocComment docComment = psiElementFactory.createDocCommentFromText(docString);
 
-        WriteCommandAction writeCommandAction = new DocWriteAction(psiMethod.getProject(), docComment, psiMethod, psiMethod
-                .getContainingFile());
+        WriteCommandAction writeCommandAction = new DocWriteAction(psiMethod.getProject(), docComment, psiMethod,
+                psiMethod.getContainingFile());
 
         RunResult result = writeCommandAction.execute();
 
